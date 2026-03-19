@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+      - "3002:3002"   # OAuth callback port (only needed for first-time authorization)
+    volumes:
+      - ./backend/data:/app/data   # SQLite database + credentials + token
+    environment:
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

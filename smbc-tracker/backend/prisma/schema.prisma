@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../data/smbc.db"
+}
+
+model Transaction {
+  id             Int      @id @default(autoincrement())
+  approvalNumber String   @unique          // 承認番号 — used as dedup key
+  date           DateTime
+  merchant       String
+  amount         Int                       // JPY, integer
+  category       String   @default("未分類")
+  categorySource String   @default("auto") // "auto" | "manual"
+  gmailMessageId String   @unique
+  createdAt      DateTime @default(now())
+}
+
+model SyncState {
+  id        Int    @id @default(1)
+  historyId String @default("")            // last Gmail historyId for incremental sync
+}

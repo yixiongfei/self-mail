@@ -1,0 +1,26 @@
+# Dependencies
+**/node_modules/
+
+# Build output
+**/dist/
+
+# --- Sensitive credentials (NEVER commit these) ---
+backend/data/credentials.json
+backend/data/token.json
+
+# SQLite database
+backend/data/smbc.db
+backend/data/*.db
+backend/prisma/migrations/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+**/.env
+**/.env.local
+
+# OS
+.DS_Store
+Thumbs.db
