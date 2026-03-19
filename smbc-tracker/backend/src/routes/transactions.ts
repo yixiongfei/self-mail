@@ -5,7 +5,7 @@ const router = Router();
 
 // GET /api/transactions?year=2026&month=3&category=コンビニ&page=1&limit=50
 router.get('/', async (req, res) => {
-  const { year, month, category, page = '1', limit = '50' } = req.query as Record<string, string>;
+  const { year, month, category, page = '1', limit = '50', sortAmount } = req.query as Record<string, string>;
 
   const where: any = {};
   if (year && month) {
@@ -19,8 +19,12 @@ router.get('/', async (req, res) => {
   const skip  = (parseInt(page) - 1) * parseInt(limit);
   const take  = parseInt(limit);
 
+  const orderBy = sortAmount === 'asc' || sortAmount === 'desc'
+    ? { amount: sortAmount as 'asc' | 'desc' }
+    : { date: 'desc' as const };
+
   const [rows, total] = await Promise.all([
-    prisma.transaction.findMany({ where, orderBy: { date: 'desc' }, skip, take }),
+    prisma.transaction.findMany({ where, orderBy, skip, take }),
     prisma.transaction.count({ where }),
   ]);
 

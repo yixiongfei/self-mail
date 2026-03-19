@@ -14,6 +14,7 @@ export default function App() {
   const [selectedMonth, setSelectedMonth] = useState<string>('');
   const [filterCat, setFilterCat]   = useState<string>('');
   const [page, setPage]             = useState(1);
+  const [sortAmount, setSortAmount] = useState<'asc' | 'desc' | undefined>(undefined);
   const [syncing, setSyncing]       = useState(false);
   const [syncMsg, setSyncMsg]       = useState('');
 
@@ -28,9 +29,9 @@ export default function App() {
 
   const loadTransactions = useCallback(async () => {
     const [year, month] = selectedMonth ? selectedMonth.split('-').map(Number) : [undefined, undefined];
-    const data = await getTransactions({ year, month, category: filterCat || undefined, page, limit: 50 });
+    const data = await getTransactions({ year, month, category: filterCat || undefined, page, limit: 50, sortAmount });
     setTxPage(data);
-  }, [selectedMonth, filterCat, page]);
+  }, [selectedMonth, filterCat, page, sortAmount]);
 
   useEffect(() => { loadStats(); }, [loadStats]);
   useEffect(() => { loadTransactions(); }, [loadTransactions]);
@@ -135,6 +136,8 @@ export default function App() {
             limit={txPage.limit}
             onPageChange={setPage}
             onUpdated={handleTxUpdated}
+            sortAmount={sortAmount}
+            onSortAmount={(s) => { setSortAmount(s); setPage(1); }}
           />
         )}
       </main>

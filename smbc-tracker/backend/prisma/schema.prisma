@@ -9,17 +9,24 @@ datasource db {
 
 model Transaction {
   id             Int      @id @default(autoincrement())
-  approvalNumber String   @unique          // 承認番号 — used as dedup key
+  approvalNumber String   @unique
   date           DateTime
   merchant       String
-  amount         Int                       // JPY, integer
+  amount         Int
   category       String   @default("未分類")
-  categorySource String   @default("auto") // "auto" | "manual"
+  categorySource String   @default("auto")
   gmailMessageId String   @unique
   createdAt      DateTime @default(now())
 }
 
 model SyncState {
-  id        Int    @id @default(1)
-  historyId String @default("")            // last Gmail historyId for incremental sync
+  id        Int    @id @default(autoincrement())
+  historyId String @default("")
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  isCustom  Boolean  @default(false)
+  createdAt DateTime @default(now())
 }

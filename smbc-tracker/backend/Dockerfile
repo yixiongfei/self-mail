@@ -25,4 +25,4 @@ EXPOSE 3001
 # Expose OAuth callback port for first-time authorization
 EXPOSE 3002
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db execute --file prisma/migrations/migrate_categories.sql --schema prisma/schema.prisma 2>/dev/null || true && node dist/index.js"]

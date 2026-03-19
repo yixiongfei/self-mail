@@ -3,6 +3,7 @@ import cors from 'cors';
 import cron from 'node-cron';
 import transactionsRouter from './routes/transactions';
 import syncRouter from './routes/sync';
+import categoriesRouter from './routes/categories';
 import { runSync } from './services/syncService';
 
 const app  = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/sync', syncRouter);
+app.use('/api/categories', categoriesRouter);
 
 app.listen(PORT, () => {
   console.log(`后端服务已启动: http://localhost:${PORT}`);
